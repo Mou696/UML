@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting Website</title>
+</head>
+<body>
+    <h1>Voting Website</h1>
+
+    <!-- Login Form -->
+    <div id="loginForm">
+        <h2>Login</h2>
+        <label for="username">Username:</label>
+        <input type="text" id="username"><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password"><br>
+        <button onclick="login()">Login</button>
+    </div>
+
+    <!-- Voting Form -->
+    <div id="votingSection" style="display:none;">
+        <h2>Vote for Your Favorite Option</h2>
+        <form id="voteForm">
+            <label>
+                <input type="radio" name="option" value="Option 1"> Option 1
+            </label><br>
+            <label>
+                <input type="radio" name="option" value="Option 2"> Option 2
+            </label><br>
+            <label>
+                <input type="radio" name="option" value="Option 3"> Option 3
+            </label><br>
+            <button type="submit">Submit Vote</button>
+        </form>
+        <p id="resultMessage"></p>
+    </div>
+
+    <!-- Admin Section -->
+    <div id="adminSection" style="display:none;">
+        <h2>Admin Panel</h2>
+        <button onclick="addPoll()">Add Poll</button>
+        <button onclick="deletePoll()">Delete Poll</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
