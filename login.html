@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Inline styles for additional customization */
+        body {
+            background-image: url('background.jpg'); /* Background image (optional) */
+            background-size: cover; /* Cover the entire screen */
+            background-position: center; /* Center the image */
+        }
+        .login-container {
+            background: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+            animation: fadeIn 1s ease; /* Fade-in animation */
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container d-flex flex-column justify-content-center align-items-center vh-100">
+        <div class="login-container">
+            <h1 class="mb-4 text-center">Welcome to the Voting System</h1>
+            <form id="login-form" class="w-100" onsubmit="handleLogin(event)">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="username" placeholder="Username" required>
+                    <label for="username">Username</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="password" placeholder="Password" required>
+                    <label for="password">Password</label>
+                </div>
+                <div id="error-message" class="invalid-feedback" style="display: none;">
+                    Invalid username or password.
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+            <p id="error-message" class="text-danger text-center mt-3" style="display: none;">Invalid login. Please try again.</p>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
