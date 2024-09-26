@@ -40,7 +40,6 @@ function handleVote(event, pollIndex) {
     const selectedOption = document.querySelector('input[name="vote-option-' + pollIndex + '"]:checked');
 
     if (!selectedOption) {
-        alert("Please select an option to vote.");
         return;
     }
 
@@ -53,12 +52,11 @@ function handleVote(event, pollIndex) {
         }
     });
 
-    alert(`You voted for ${selectedValue}`);
     updatePollResultsDisplay(); // Refresh the results display
-    showProgressBars(pollIndex); // Update the progress bars
+    showProgressBars(pollIndex, selectedValue); // Pass the selected value to showProgressBars
 }
 
-function showProgressBars(pollIndex) {
+function showProgressBars(pollIndex, selectedValue) {
     const totalVotes = pollResults[pollIndex].options.reduce((total, option) => total + option.votes, 0);
     
     pollResults[pollIndex].options.forEach((option, index) => {
@@ -74,18 +72,21 @@ function showProgressBars(pollIndex) {
         percentageText.style.display = "block";
         percentageText.textContent = `${percentage.toFixed(1)}%`;
         
-        // Ensure the progress bar has a fixed height
-        progressBar.style.height = "20px"; // Set a fixed height
-        progressBar.querySelector('.progress-bar').style.height = "100%"; // Ensure inner bar fills it completely
+        // Set fixed height
+        progressBar.style.height = "20px"; 
+        progressBar.querySelector('.progress-bar').style.height = "100%"; 
 
         // Change colors
-        if (option.votes > 0) {
-            progressBar.querySelector('.progress-bar').style.backgroundColor = option.option === selectedValue ? 'blue' : 'gray';
+        if (option.option === selectedValue) {
+            // Set the selected option to blue
+            progressBar.querySelector('.progress-bar').style.backgroundColor = 'blue';
         } else {
+            // Set other options to gray
             progressBar.querySelector('.progress-bar').style.backgroundColor = 'gray';
         }
     });
 }
+
 
 function updatePollResultsDisplay() {
     const resultsDiv = document.getElementById("poll-results");
@@ -148,17 +149,24 @@ function updatePollList() {
             const pollCard = document.createElement("div");
             pollCard.className = "col-md-4 mb-3"; // Bootstrap column for layout
 
+            // Generate options with appropriate classes
+            const optionsHTML = poll.options.map(option => {
+                // Determine if the option should be highlighted
+                const selectedValue = option.votes > 0 ? option.option : ''; // If there are votes, show as selected
+                return `
+                    <div class="form-check option ${selectedValue === option.option ? 'selected' : ''}">
+                        <input type="radio" class="form-check-input" id="${option.option}-${pollIndex}" name="vote-option-${pollIndex}" value="${option.option}">
+                        <label class="form-check-label" for="${option.option}-${pollIndex}">${option.option}</label>
+                    </div>
+                `;
+            }).join('');
+
             pollCard.innerHTML = `
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
                         <h5 class="card-title">${poll.pollName}</h5>
                         <div class="options mb-3">
-                            ${poll.options.map(option => `
-                                <div class="form-check">
-                                    <input type="radio" class="form-check-input" id="${option.option}-${pollIndex}" name="vote-option-${pollIndex}" value="${option.option}">
-                                    <label class="form-check-label" for="${option.option}-${pollIndex}">${option.option}</label>
-                                </div>
-                            `).join('')}
+                            ${optionsHTML}
                         </div>
                         <button class="btn btn-primary mt-3 vote-button" onclick="handleVote(event, ${pollIndex})">Vote</button>
                         <button class="btn btn-danger mt-3" onclick="deletePoll(${pollIndex})">Delete</button>
@@ -170,6 +178,7 @@ function updatePollList() {
         });
     }
 }
+
 
 // Delete a poll
 function deletePoll(pollIndex) {
@@ -213,7 +222,13 @@ function logout() {
     window.location.href = "index.html";
 }
 
-// Load data when admin dashboard is accessed
+// Function to add glassmorphism effect on login page
+function addGlassMorphismEffect() {
+    
+}
+
+// Call this function in window.onload
 window.onload = function() {
     updatePollList(); // Show polls in admin dashboard
+    addGlassMorphismEffect(); // This may not be needed anymore
 }

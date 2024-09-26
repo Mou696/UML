@@ -4,56 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* Inline styles for additional customization */
-        body {
-            background-image: url('background.jpg'); /* Background image (optional) */
-            background-size: cover; /* Cover the entire screen */
-            background-position: center; /* Center the image */
-        }
-        .login-container {
-            background: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
-            animation: fadeIn 1s ease; /* Fade-in animation */
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 </head>
-<body class="bg-light">
-    <div class="container d-flex flex-column justify-content-center align-items-center vh-100">
-        <div class="login-container">
-            <h1 class="mb-4 text-center">Welcome to the Voting System</h1>
-            <form id="login-form" class="w-100" onsubmit="handleLogin(event)">
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="username" placeholder="Username" required>
+<body>
+    <div class="login-container d-flex align-items-center justify-content-center">
+        <!-- Glassmorphism Container -->
+        <div class="glass-container"></div>
+        
+        <!-- Login Card -->
+        <div class="login-card card shadow-lg p-4">
+            <h2 class="text-center mb-4">Welcome Back!</h2>
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
                     <label for="username">Username</label>
+                    <input type="text" id="username" class="form-control" placeholder="Enter username" required>
                 </div>
-                <div class="form-floating mb-3">
-                    <input type="password" class="form-control" id="password" placeholder="Password" required>
+                <div class="form-group">
                     <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Enter password" required>
                 </div>
-                <div id="error-message" class="invalid-feedback" style="display: none;">
-                    Invalid username or password.
+                <div id="error-message" class="alert alert-danger" role="alert" style="display: none;">
+                    Invalid username or password!
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Login</button>
+                <button type="submit" class="btn btn-primary btn-block mt-4">Login</button>
             </form>
-            <p id="error-message" class="text-danger text-center mt-3" style="display: none;">Invalid login. Please try again.</p>
         </div>
     </div>
-    
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Custom JS -->
     <script src="script.js"></script>
 </body>
 </html>
