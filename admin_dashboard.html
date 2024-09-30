@@ -30,13 +30,11 @@
             <button id="create-poll-btn" class="btn btn-success" onclick="openPollForm()">Create New Poll</button>
         </div>
 
-        <!-- Poll Management Section -->
         <div class="row" id="poll-container">
             <!-- Polls will be dynamically inserted here -->
         </div>
     </div>
 
-    <!-- Poll Creation Modal -->
     <div id="poll-form-modal" class="modal fade" tabindex="-1" aria-labelledby="pollFormModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -72,96 +70,96 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
     <script>
-
-    function updatePolls() {
-        const pollContainer = document.getElementById("poll-container");
-        pollContainer.innerHTML = ''; // Clear existing content
-        pollResults.forEach((poll, pollIndex) => {
-            const pollCard = `
-                <div class="col-md-4 mb-3">
-                    <div class="card h-100 shadow-sm poll-card">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">${poll.pollName}</h5>
-                            <div class="options">
-                                ${poll.options.map((option, index) => `
-                                    <div class="form-check">
-                                        <input type="radio" class="form-check-input" id="option${pollIndex}-${index}" name="vote-option-${pollIndex}" value="${option.option}" onchange="enableVoteButton(this); showProgressBar(${pollIndex}, ${index})">
-                                        <label class="form-check-label" for="option${pollIndex}-${index}">${option.option}</label>
-                                        <div class="progress" id="progress-${pollIndex}-${index}" style="display: none;">
-                                            <div class="progress-bar" role="progressbar" style="width: 0%;"></div>
+        function updatePolls() {
+            const pollContainer = document.getElementById("poll-container");
+            pollContainer.innerHTML = ''; 
+            pollResults.forEach((poll, pollIndex) => {
+                const pollCard = `
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 shadow-sm poll-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-center">${poll.pollName}</h5>
+                                <div class="options">
+                                    ${poll.options.map((option, index) => `
+                                        <div class="form-check">
+                                            <input type="radio" class="form-check-input" id="option${pollIndex}-${index}" name="vote-option-${pollIndex}" value="${option.option}" onchange="enableVoteButton(this); showProgressBar(${pollIndex}, ${index})">
+                                            <label class="form-check-label" for="option${pollIndex}-${index}">${option.option}</label>
+                                            <div class="progress" id="progress-${pollIndex}-${index}" style="display: none;">
+                                                <div class="progress-bar" role="progressbar" style="width: 0%;"></div>
+                                            </div>
+                                            <p class="percentage" id="percentage-${pollIndex}-${index}" style="display: none;">0%</p>
                                         </div>
-                                        <p class="percentage" id="percentage-${pollIndex}-${index}" style="display: none;">0%</p>
-                                    </div>
-                                `).join('')}
+                                    `).join('')}
+                                </div>
+                                <button id="vote-button" class="btn btn-primary mt-3" onclick="handleVote(event, ${pollIndex})" disabled>Vote</button>
                             </div>
-                            <button id="vote-button" class="btn btn-primary mt-3" onclick="handleVote(event, ${pollIndex})" disabled>Vote</button>
                         </div>
                     </div>
+                `;
+                pollContainer.insertAdjacentHTML('beforeend', pollCard);
+            });
+        }
+
+        function showProgressBar(pollIndex, optionIndex) {
+            const totalVotes = pollResults[pollIndex].options.reduce((total, option) => total + option.votes, 0);
+            const selectedOption = pollResults[pollIndex].options[optionIndex];
+            const progressElement = document.getElementById(`progress-${pollIndex}-${optionIndex}`);
+            const percentageElement = document.getElementById(`percentage-${pollIndex}-${optionIndex}`);
+            
+            // Display progress bar
+            progressElement.style.display = 'block';
+            const percentage = totalVotes > 0 ? (selectedOption.votes / totalVotes) * 100 : 0;
+            progressElement.querySelector('.progress-bar').style.width = `${percentage}%`;
+            percentageElement.style.display = 'block';
+            percentageElement.textContent = `${percentage.toFixed(0)}%`;
+        }
+
+        // Poll management scripts
+        function enableVoteButton(radio) {
+            const voteButton = document.getElementById("vote-button");
+            if (radio) {
+                voteButton.disabled = false; // Enable button if a radio is selected
+            }
+        }
+
+        // Modal functions
+        function openPollForm() {
+            $('#poll-form-modal').modal('show'); // Show modal using Bootstrap
+        }
+
+        function closePollForm() {
+            $('#poll-form-modal').modal('hide'); // Hide modal using Bootstrap
+            resetPollForm();
+        }
+
+        function resetPollForm() {
+            document.getElementById("pollName").value = '';
+            document.getElementById("option1").value = '';
+            document.getElementById("option2").value = '';
+        }
+
+        function addPollOption() {
+            const optionIndex = document.querySelectorAll('#options-container .form-control').length + 1;
+            const newOption = `
+                <div class="mb-3">
+                    <label for="option${optionIndex}" class="form-label">Option ${optionIndex}:</label>
+                    <input type="text" class="form-control" id="option${optionIndex}" required>
                 </div>
             `;
-            pollContainer.insertAdjacentHTML('beforeend', pollCard);
-        });
-    }
-
-    function showProgressBar(pollIndex, optionIndex) {
-        const totalVotes = pollResults[pollIndex].options.reduce((total, option) => total + option.votes, 0);
-        const selectedOption = pollResults[pollIndex].options[optionIndex];
-        const progressElement = document.getElementById(`progress-${pollIndex}-${optionIndex}`);
-        const percentageElement = document.getElementById(`percentage-${pollIndex}-${optionIndex}`);
-        
-        // Display progress bar
-        progressElement.style.display = 'block';
-        const percentage = totalVotes > 0 ? (selectedOption.votes / totalVotes) * 100 : 0;
-        progressElement.querySelector('.progress-bar').style.width = `${percentage}%`;
-        percentageElement.style.display = 'block';
-        percentageElement.textContent = `${percentage.toFixed(0)}%`;
-    }
-
-    // Poll management scripts
-    function enableVoteButton(radio) {
-        const voteButton = document.getElementById("vote-button");
-        if (radio) {
-            voteButton.disabled = false; // Enable button if a radio is selected
+            document.getElementById('options-container').insertAdjacentHTML('beforeend', newOption);
         }
-    }
 
-    // Modal functions
-    function openPollForm() {
-        $('#poll-form-modal').modal('show'); // Show modal using Bootstrap
-    }
+        function handleCreatePoll(event) {
+            event.preventDefault();
+            // Implement poll creation logic
+            closePollForm(); // Close the modal after creating a poll
+        }
 
-    function closePollForm() {
-        $('#poll-form-modal').modal('hide'); // Hide modal using Bootstrap
-        resetPollForm();
-    }
-
-    function resetPollForm() {
-        document.getElementById("pollName").value = '';
-        document.getElementById("option1").value = '';
-        document.getElementById("option2").value = '';
-    }
-
-    function addPollOption() {
-        const optionIndex = document.querySelectorAll('#options-container .form-control').length + 1;
-        const newOption = `
-            <div class="mb-3">
-                <label for="option${optionIndex}" class="form-label">Option ${optionIndex}:</label>
-                <input type="text" class="form-control" id="option${optionIndex}" required>
-            </div>
-        `;
-        document.getElementById('options-container').insertAdjacentHTML('beforeend', newOption);
-    }
-
-    function handleCreatePoll(event) {
-        event.preventDefault();
-        // Implement poll creation logic
-    }
-
-    // Load function to check login and update polls
-    window.onload = function() {
-        checkLoginForVoting();
-        updatePolls(); // Populate polls on load
-    };
+        // Load function to check login and update polls
+        window.onload = function() {
+            checkLoginForVoting();
+            updatePolls(); // Populate polls on load.
+        };
     </script>
 </body>
 </html>

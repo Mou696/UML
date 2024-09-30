@@ -19,10 +19,54 @@ function handleLogin(event) {
     }
 }
 
+// Poll Results Data
 let pollResults = [
     { pollName: "Poll 1", options: [{ option: "Option 1", votes: 10 }, { option: "Option 2", votes: 5 }] },
     { pollName: "Poll 2", options: [{ option: "Option A", votes: 8 }, { option: "Option B", votes: 3 }] }
 ];
+
+// Update Poll List on Admin Dashboard
+function updatePollList() {
+    const pollList = document.getElementById("poll-list");
+    pollList.innerHTML = ''; // Clear current list
+
+    pollResults.forEach((poll, pollIndex) => {
+        const pollCard = `
+            <div class="col-lg-4 mb-3">
+                <div class="card poll-card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">${poll.pollName}</h5>
+                        <button class="btn btn-danger mt-3" onclick="deletePoll(${pollIndex})">Delete Poll</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        pollList.insertAdjacentHTML('beforeend', pollCard);
+    });
+}
+
+// Delete Poll Function
+function deletePoll(pollIndex) {
+    const pollName = pollResults[pollIndex].pollName;
+    const confirmDelete = confirm(`Are you sure you want to delete poll "${pollName}"?`);
+    if (confirmDelete) {
+        const pollCard = document.querySelector(`#poll-card-${pollIndex}`);
+        pollCard.style.transform = 'scale(0)'; // Shrink animation
+        setTimeout(() => {
+            pollResults.splice(pollIndex, 1);
+            alert(`Poll "${pollName}" deleted.`);
+            updatePollList(); // Refresh the poll list
+        }, 300); // Delay to show animation
+    }
+}
+
+
+// Call on page load
+window.onload = function() {
+    updatePollList(); // Display polls on page load
+    addGlassMorphismEffect(); // Add any existing page load functions here
+};
+
 
 let optionCount = 2; // Initial number of options for new poll creation
 
@@ -40,6 +84,13 @@ function handleVote(event, pollIndex) {
     const selectedOption = document.querySelector('input[name="vote-option-' + pollIndex + '"]:checked');
 
     if (!selectedOption) {
+        alert("Please select an option before voting!");
+        return;
+    }
+
+    const hasVoted = localStorage.getItem(`voted-${pollIndex}`);
+    if (hasVoted) {
+        alert("You have already voted on this poll.");
         return;
     }
 
@@ -52,9 +103,12 @@ function handleVote(event, pollIndex) {
         }
     });
 
-    updatePollResultsDisplay(); // Refresh the results display
-    showProgressBars(pollIndex, selectedValue); // Pass the selected value to showProgressBars
+    localStorage.setItem(`voted-${pollIndex}`, true); // Mark poll as voted
+
+    updatePollResultsDisplay();  // Refresh the poll results
+    showProgressBars(pollIndex, selectedValue);  // Display the updated progress bars
 }
+
 
 function showProgressBars(pollIndex, selectedValue) {
     const totalVotes = pollResults[pollIndex].options.reduce((total, option) => total + option.votes, 0);
@@ -138,6 +192,10 @@ function handleCreatePoll(event) {
         alert("Poll must have a name and at least 2 options.");
     }
 }
+
+// Add this event listener inside the window.onload function
+document.getElementById('createPollForm').addEventListener('submit', handleCreatePoll);
+
 
 // Update poll list for admin (for deletion and voting)
 function updatePollList() {
@@ -231,4 +289,6 @@ function addGlassMorphismEffect() {
 window.onload = function() {
     updatePollList(); // Show polls in admin dashboard
     addGlassMorphismEffect(); // This may not be needed anymore
-}
+    document.getElementById('createPollForm').addEventListener('submit', handleCreatePoll); // Ensure it's set up on load
+};
+

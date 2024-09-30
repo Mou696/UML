@@ -1,10 +1,19 @@
-body {
-    background-color: #f8f9fa; /* Light background for a clean look */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+/* General Styles */
+body.general-body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
     margin: 0;
     padding: 0;
 }
 
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* Headings */
 h1 {
     color: #343a40; /* Darker text for better contrast */
     margin-top: 20px;
@@ -12,10 +21,12 @@ h1 {
     font-size: 2.5rem;
 }
 
+/* Navbar */
 .navbar {
     margin-bottom: 30px; /* Space below the navbar */
 }
 
+/* Forms and Inputs */
 .form-control {
     border: 1px solid #ced4da; /* Soft border */
     border-radius: 0.25rem; /* Standard Bootstrap radius */
@@ -24,17 +35,6 @@ h1 {
 .form-control:focus {
     border-color: #007bff; /* Bootstrap primary color */
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.25); /* Subtle shadow */
-}
-
-.btn-primary {
-    background-color: #007bff; /* Bootstrap primary color */
-    border-color: #007bff;
-    border-radius: 0.25rem; /* Standard Bootstrap radius */
-}
-
-.btn-primary:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-    border-color: #0056b3;
 }
 
 .invalid-feedback {
@@ -49,6 +49,18 @@ h1 {
     display: block; /* Show feedback for invalid inputs */
 }
 
+/* Buttons */
+.btn-primary {
+    background-color: #007bff; /* Bootstrap primary color */
+    border-color: #007bff;
+    border-radius: 0.25rem; /* Standard Bootstrap radius */
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    border-color: #0056b3;
+}
+
 button {
     background-color: transparent; /* Removes default button background */
     color: #000; /* Change text color to black */
@@ -58,12 +70,12 @@ button {
     cursor: pointer;
 }
 
-/* Add hover effect */
 button:hover {
     background-color: #000; /* Dark background on hover */
     color: #fff; /* White text on hover */
 }
 
+/* Progress Bars */
 .progress {
     height: 20px;
     background-color: #e0e0e0; /* Light gray background */
@@ -76,6 +88,7 @@ button:hover {
     transition: width 0.5s; /* Smooth transition for the bar */
 }
 
+/* Poll Container */
 .poll-container {
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -87,12 +100,12 @@ button:hover {
     transition: transform 0.3s ease; /* Animation for hover effect */
 }
 
-/* Hover effect for poll container */
 .poll-container:hover {
     transform: translateY(-5px); /* Slight lift effect */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
 }
 
+/* Options and Vote Button */
 .option {
     margin-bottom: 15px;
 }
@@ -122,7 +135,7 @@ button:hover {
     display: none; /* Hide radio buttons */
 }
 
-/* Footer styling */
+/* Footer */
 footer {
     background-color: #343a40; /* Dark footer background */
     color: white;
@@ -134,7 +147,7 @@ footer {
     font-size: 0.9rem;
 }
 
-
+/* Poll Card Styles */
 .poll-card {
     border: 1px solid #007bff; /* Border color */
     border-radius: 10px; /* Rounded corners */
@@ -145,10 +158,9 @@ footer {
     display: flex; /* Use flexbox for alignment */
     flex-direction: column; /* Stack children vertically */
     justify-content: space-between; /* Space items evenly */
-    margin: 15px; /* Space between each card (adjust as needed) */
+    margin: 15px; /* Space between each card */
     margin-left: 12%;
 }
-
 
 .poll-card:hover {
     transform: scale(1.02); /* Slight zoom on hover */
@@ -174,6 +186,7 @@ footer {
     height: auto; /* Allow height to adjust based on content */
 }
 
+/* Responsive Styles */
 @media (max-width: 768px) {
     .poll-card {
         width: 100%; /* Full width on smaller screens */
@@ -181,41 +194,10 @@ footer {
     }
 }
 
-
-.progress {
-    height: 20px; /* Height of the progress bar */
-    margin-top: 5px; /* Space between the radio button and the progress bar */
-}
-
-.progress-bar {
-    background-color: blue; /* Default color for the progress */
-    transition: width 0.3s ease; /* Smooth transition for width change */
-}
-
-.progress {
-    height: 20px; /* Ensure all progress bars have the same height */
-}
-
-
-.option {
-    transition: background-color 0.3s ease;
-    padding: 10px; /* Add padding for better visibility */
-}
-
-.option.selected {
-    background-color: blue; /* Highlight selected option */
-    color: white; /* Change text color for contrast */
-}
-
-.option:not(.selected) {
-    background-color: gray; /* Default color for unselected options */
-}
-
-/* General Styles */
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
+@media (max-width: 768px) {
+    .col-lg-4 {
+        max-width: 100%;
+    }
 }
 
 /* Login Page Styles */
@@ -230,7 +212,6 @@ body, html {
     position: relative; /* Relative positioning for glass container */
 }
 
-/* Glassmorphism Container */
 .glass-container {
     position: absolute; /* Behind the login card */
     width: 90%; /* Responsive width */
@@ -244,7 +225,6 @@ body, html {
     z-index: 1; /* Behind the login card */
 }
 
-/* Responsive Login Card */
 .login-card {
     position: relative; /* Relative positioning for stacking context */
     width: 90%; /* Responsive width */
@@ -257,7 +237,6 @@ body, html {
     padding: 20px; /* Padding for the card */
 }
 
-/* Media Queries for Smaller Devices */
 @media (max-width: 768px) {
     .glass-container {
         height: 70%; /* Adjust height for tablets */
@@ -276,4 +255,170 @@ body, html {
     .login-card {
         width: 95%; /* Full width card */
     }
+}
+
+/* Admin Styles */
+body.admin-body {
+    background: linear-gradient(to right, #e0eafc, #cfdef3);
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Glassmorphism Poll Cards */
+.poll-card {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    transition: transform 0.3s ease-in-out;
+    width: 300px; /* Consider consistent width */
+    height: auto; /* Make height flexible */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 15px auto; /* Center poll-card */
+}
+
+.poll-card:hover {
+    transform: scale(1.02); /* Slight zoom on hover */
+}
+
+
+/* Glassmorphism Effect */
+.glass {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Header and Navigation */
+.navbar {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+}
+
+.navbar-brand, .nav-link {
+    color: #fff !important;
+}
+
+.nav-link:hover {
+    color: #f0a500 !important; /* Highlight color on hover */
+}
+
+/* Form Styles */
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.form-control:focus {
+    border-color: #f0a500; /* Highlight on focus */
+    box-shadow: 0 0 5px rgba(240, 165, 0, 0.5);
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 5px;
+    padding: 10px 20px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+/* Poll Card Styles */
+.poll-card {
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.poll-card:hover {
+    transform: translateY(-5px); /* Raise card on hover */
+}
+
+/* Progress Bar Styles */
+.progress {
+    border-radius: 5px;
+    height: 20px;
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    transition: width 0.5s; /* Smooth width transition */
+}
+
+/* Option Styles */
+.option {
+    margin-bottom: 10px;
+}
+
+/* Poll Results Container */
+.poll-container {
+    margin-bottom: 20px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .poll-card {
+        margin-bottom: 20px; /* Add space between cards on small screens */
+    }
+}
+
+/* Error message styles */
+.is-invalid {
+    border-color: #dc3545 !important;
+}
+
+.error-message {
+    color: #dc3545;
+    display: none; /* Initially hidden */
+}
+
+/* Modal Styles */
+.modal-header {
+    background-color: #007bff; /* Primary color */
+    color: white;
+}
+
+.modal-title {
+    font-weight: bold;
+}
+
+.modal-body {
+    background-color: #f9f9f9;
+}
+
+.form-label {
+    font-weight: bold; /* Bold labels */
+}
+
+#pollCreationMessage {
+    text-align: center; /* Center the message */
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
 }
