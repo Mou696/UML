@@ -258,30 +258,14 @@ footer {
 }
 
 /* Admin Styles */
+/* Admin Styles */
 body.admin-body {
-    background: linear-gradient(to right, #e0eafc, #cfdef3);
-    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to right, #e0eafc, #cfdef3); /* Keep your background */
+    font-family: 'Poppins', sans-serif; /* Retain font-family */
+    min-height: 100vh; /* Ensure full height */
+    margin: 0;
+    padding: 0;
 }
-
-/* Glassmorphism Poll Cards */
-.poll-card {
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 20px;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    transition: transform 0.3s ease-in-out;
-    width: 300px; /* Consider consistent width */
-    height: auto; /* Make height flexible */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin: 15px auto; /* Center poll-card */
-}
-
-.poll-card:hover {
-    transform: scale(1.02); /* Slight zoom on hover */
-}
-
 
 /* Glassmorphism Effect */
 .glass {
@@ -291,10 +275,48 @@ body.admin-body {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+/* Poll Card Styles */
+.poll-card {
+    position: relative; /* Required for the pseudo-elements */
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transitions */
+    overflow: hidden; /* Ensures shadows don't overflow */
+    margin: 20px; /* Added margin for spacing between cards */
+}
+
+.poll-card:before, .poll-card:after {
+    z-index: -1;
+    position: absolute;
+    content: "";
+    bottom: -10px; /* Positioned below the card */
+    left: -10px; /* Positioned to the left of the card */
+    width: calc(100% + 20px); /* Width larger than the card */
+    height: calc(100% + 20px); /* Height larger than the card */
+    background: rgba(119, 119, 119, 0.3); /* Slightly transparent for better visual */
+    box-shadow: 0 15px 20px rgba(119, 119, 119, 0.5); /* Soft shadow */
+    border-radius: 20px; /* Match with card border-radius */
+    transition: transform 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.poll-card:after {
+    left: auto;
+    right: -10px; /* Positioned to the right of the card */
+    transform: rotate(3deg); /* Light rotation for the effect */
+}
+
+/* Increase shadow on hover */
+.poll-card:hover:before, .poll-card:hover:after {
+    box-shadow: 0 20px 30px rgba(119, 119, 119, 0.6); /* Enhanced shadow on hover */
+}
+
 /* Header and Navigation */
 .navbar {
     background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(5px);
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
 }
 
 .navbar-brand, .nav-link {
@@ -337,17 +359,6 @@ body.admin-body {
     border-color: #dc3545;
 }
 
-/* Poll Card Styles */
-.poll-card {
-    border-radius: 10px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
-}
-
-.poll-card:hover {
-    transform: translateY(-5px); /* Raise card on hover */
-}
-
 /* Progress Bar Styles */
 .progress {
     border-radius: 5px;
@@ -364,9 +375,19 @@ body.admin-body {
     margin-bottom: 10px;
 }
 
-/* Poll Results Container */
+/* Poll Container */
 .poll-container {
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* Space between containers */
+}
+
+.poll-container {
+    box-shadow: 10px 5px 5px red;
+    transition: box-shadow 0.3s ease; /* Smooth transition effect */
+}
+
+/* Stronger glow on hover */
+.poll-container:hover {
+    box-shadow: 0 0 20px rgba(0, 204, 255, 1); /* More pronounced glow */
 }
 
 /* Responsive Styles */
@@ -413,12 +434,38 @@ body.admin-body {
     text-align: center; /* Center the message */
 }
 
-.btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
+/* Additional Button Styles for Navbar */
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
 }
 
-.btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #2c85d3; /* Secondary button color */
+    border: none;
+}
+
+.btn-secondary:hover {
+    opacity: 0.9; /* Hover effect for secondary button */
+}
+
+/* New Styles for Admin Section */
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-nav {
+    flex-direction: row;
+    margin-left: auto; /* Align navbar items to the right */
+}
+
+/* Adjustments for button sizes */
+.btn-primary, .btn-danger, .btn-secondary {
+    padding: 12px 25px; /* More padding for better touch target */
+    font-size: 16px; /* Increase font size */
 }

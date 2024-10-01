@@ -3,6 +3,14 @@ const credentials = {
     ADMIN: "ADMIN"
 };
 
+// Utility function to create option input fields
+function createOptionField(optionNumber) {
+    return `
+        <label for="option${optionNumber}">Option ${optionNumber}:</label>
+        <input type="text" id="option${optionNumber}" required>
+    `;
+}
+
 // Handle login form submission
 function handleLogin(event) {
     event.preventDefault();
@@ -25,49 +33,6 @@ let pollResults = [
     { pollName: "Poll 2", options: [{ option: "Option A", votes: 8 }, { option: "Option B", votes: 3 }] }
 ];
 
-// Update Poll List on Admin Dashboard
-function updatePollList() {
-    const pollList = document.getElementById("poll-list");
-    pollList.innerHTML = ''; // Clear current list
-
-    pollResults.forEach((poll, pollIndex) => {
-        const pollCard = `
-            <div class="col-lg-4 mb-3">
-                <div class="card poll-card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">${poll.pollName}</h5>
-                        <button class="btn btn-danger mt-3" onclick="deletePoll(${pollIndex})">Delete Poll</button>
-                    </div>
-                </div>
-            </div>
-        `;
-        pollList.insertAdjacentHTML('beforeend', pollCard);
-    });
-}
-
-// Delete Poll Function
-function deletePoll(pollIndex) {
-    const pollName = pollResults[pollIndex].pollName;
-    const confirmDelete = confirm(`Are you sure you want to delete poll "${pollName}"?`);
-    if (confirmDelete) {
-        const pollCard = document.querySelector(`#poll-card-${pollIndex}`);
-        pollCard.style.transform = 'scale(0)'; // Shrink animation
-        setTimeout(() => {
-            pollResults.splice(pollIndex, 1);
-            alert(`Poll "${pollName}" deleted.`);
-            updatePollList(); // Refresh the poll list
-        }, 300); // Delay to show animation
-    }
-}
-
-
-// Call on page load
-window.onload = function() {
-    updatePollList(); // Display polls on page load
-    addGlassMorphismEffect(); // Add any existing page load functions here
-};
-
-
 let optionCount = 2; // Initial number of options for new poll creation
 
 // Check if user is logged in and allow voting
@@ -79,9 +44,10 @@ function checkLoginForVoting() {
     }
 }
 
+// Handle Vote Submission
 function handleVote(event, pollIndex) {
     event.preventDefault();
-    const selectedOption = document.querySelector('input[name="vote-option-' + pollIndex + '"]:checked');
+    const selectedOption = document.querySelector(`input[name="vote-option-${pollIndex}"]:checked`);
 
     if (!selectedOption) {
         alert("Please select an option before voting!");
@@ -104,12 +70,11 @@ function handleVote(event, pollIndex) {
     });
 
     localStorage.setItem(`voted-${pollIndex}`, true); // Mark poll as voted
-
     updatePollResultsDisplay();  // Refresh the poll results
     showProgressBars(pollIndex, selectedValue);  // Display the updated progress bars
 }
 
-
+// Display Progress Bars
 function showProgressBars(pollIndex, selectedValue) {
     const totalVotes = pollResults[pollIndex].options.reduce((total, option) => total + option.votes, 0);
     
@@ -117,47 +82,37 @@ function showProgressBars(pollIndex, selectedValue) {
         const progressBar = document.getElementById(`progress-${pollIndex}-${index}`);
         const percentageText = document.getElementById(`percentage-${pollIndex}-${index}`);
         
-        // Calculate the percentage
         const percentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0;
         
-        // Update the progress bar
         progressBar.style.display = "block";
         progressBar.querySelector('.progress-bar').style.width = `${percentage}%`;
-        percentageText.style.display = "block";
         percentageText.textContent = `${percentage.toFixed(1)}%`;
-        
-        // Set fixed height
-        progressBar.style.height = "20px"; 
-        progressBar.querySelector('.progress-bar').style.height = "100%"; 
 
-        // Change colors
         if (option.option === selectedValue) {
-            // Set the selected option to blue
             progressBar.querySelector('.progress-bar').style.backgroundColor = 'blue';
         } else {
-            // Set other options to gray
             progressBar.querySelector('.progress-bar').style.backgroundColor = 'gray';
         }
     });
 }
 
-
+// Update Poll Results Display
 function updatePollResultsDisplay() {
     const resultsDiv = document.getElementById("poll-results");
-    resultsDiv.innerHTML = ''; // Clear current results
+    resultsDiv.innerHTML = '';
 
     pollResults.forEach((poll, pollIndex) => {
         const totalVotes = poll.options.reduce((total, option) => total + option.votes, 0);
         const pollElement = document.createElement("div");
-        pollElement.className = "poll-container mb-4"; // Add class for styling
+        pollElement.className = "poll-container mb-4";
         pollElement.innerHTML = `<h3>${poll.pollName}</h3>`;
 
         poll.options.forEach((option, index) => {
             const percentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0;
             const optionElement = `
                 <div class="option">
-                    <div class="progress mb-2" role="progressbar" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100" id="progress-${pollIndex}-${index}">
-                        <div class="progress-bar" style="width: ${percentage}%; background-color: ${percentage > 0 ? 'blue' : 'gray'}; height: 100%;"></div>
+                    <div class="progress mb-2" id="progress-${pollIndex}-${index}">
+                        <div class="progress-bar" style="width: ${percentage}%; background-color: ${percentage > 0 ? 'blue' : 'gray'};"></div>
                     </div>
                     <p id="percentage-${pollIndex}-${index}">${option.option}: ${option.votes} votes (${percentage.toFixed(2)}%)</p>
                 </div>
@@ -169,7 +124,51 @@ function updatePollResultsDisplay() {
     });
 }
 
-// Handle creating a new poll in the admin dashboard
+// Admin Dashboard Functions
+
+// Function to add a poll
+function addPoll(pollName, options) {
+    const pollList = document.getElementById("poll-list");
+
+    // Create a new poll container
+    const pollContainer = document.createElement('div');
+    pollContainer.classList.add('col-lg-4', 'mb-3'); // Add necessary classes for styling
+
+    // Create poll card
+    const pollCard = `
+        <div class="card poll-card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">${pollName}</h5>
+                <button class="btn btn-danger mt-3" onclick="deletePoll(${pollResults.length})">Delete Poll</button>
+            </div>
+        </div>
+    `;
+
+    pollContainer.innerHTML = pollCard;
+    pollList.appendChild(pollContainer);
+}
+
+// Update Poll List on Admin Dashboard
+function updatePollList() {
+    const pollList = document.getElementById("poll-list");
+    pollList.innerHTML = '';
+
+    pollResults.forEach((poll, pollIndex) => {
+        const pollCard = `
+            <div class="col-lg-4 mb-3">
+                <div class="card poll-card h-100 shadow-sm poll-container">
+                    <div class="card-body">
+                        <h5 class="card-title">${poll.pollName}</h5>
+                        <button class="btn btn-danger mt-3" onclick="deletePoll(${pollIndex})">Delete Poll</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        pollList.insertAdjacentHTML('beforeend', pollCard);
+    });
+}
+
+// Handle Poll Creation in Admin Dashboard
 function handleCreatePoll(event) {
     event.preventDefault();
 
@@ -183,112 +182,65 @@ function handleCreatePoll(event) {
         }
     }
 
-    if (pollName && options.length >= 2) {
-        pollResults.push({ pollName: pollName, options: options });
+    if (pollName && options.length >= 2 && options.length <= 5) {
+        pollResults.push({ pollName, options });
+        addPoll(pollName, options); // Add the poll to the poll list
         alert(`Poll "${pollName}" created successfully.`);
-        updatePollList(); // Refresh poll list for admin view
-        closePollForm(); // Close and reset poll creation form
+        updatePollList();
+        closePollForm();
     } else {
-        alert("Poll must have a name and at least 2 options.");
+        alert("Poll must have a name and between 2 to 5 options.");
     }
 }
 
-// Add this event listener inside the window.onload function
-document.getElementById('createPollForm').addEventListener('submit', handleCreatePoll);
-
-
-// Update poll list for admin (for deletion and voting)
-function updatePollList() {
-    const pollList = document.getElementById("poll-list");
-
-    if (pollList) {
-        pollList.innerHTML = '';
-        pollResults.forEach((poll, pollIndex) => {
-            const pollCard = document.createElement("div");
-            pollCard.className = "col-md-4 mb-3"; // Bootstrap column for layout
-
-            // Generate options with appropriate classes
-            const optionsHTML = poll.options.map(option => {
-                // Determine if the option should be highlighted
-                const selectedValue = option.votes > 0 ? option.option : ''; // If there are votes, show as selected
-                return `
-                    <div class="form-check option ${selectedValue === option.option ? 'selected' : ''}">
-                        <input type="radio" class="form-check-input" id="${option.option}-${pollIndex}" name="vote-option-${pollIndex}" value="${option.option}">
-                        <label class="form-check-label" for="${option.option}-${pollIndex}">${option.option}</label>
-                    </div>
-                `;
-            }).join('');
-
-            pollCard.innerHTML = `
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">${poll.pollName}</h5>
-                        <div class="options mb-3">
-                            ${optionsHTML}
-                        </div>
-                        <button class="btn btn-primary mt-3 vote-button" onclick="handleVote(event, ${pollIndex})">Vote</button>
-                        <button class="btn btn-danger mt-3" onclick="deletePoll(${pollIndex})">Delete</button>
-                    </div>
-                </div>
-            `;
-
-            pollList.appendChild(pollCard);
-        });
-    }
-}
-
-
-// Delete a poll
+// Delete Poll Function
 function deletePoll(pollIndex) {
-    const pollName = pollResults[pollIndex].pollName; // Store name before deletion
+    const pollName = pollResults[pollIndex].pollName;
     const confirmDelete = confirm(`Are you sure you want to delete poll "${pollName}"?`);
     if (confirmDelete) {
         pollResults.splice(pollIndex, 1);
-        alert(`Poll "${pollName}" deleted.`);
-        updatePollList(); // Refresh poll list
+        updatePollList();
     }
 }
 
 // Add a new poll option input field
 function addPollOption() {
-    optionCount++;
-    const optionContainer = document.getElementById("options-container");
-    const newOptionInput = document.createElement("div");
-    newOptionInput.innerHTML = `
-        <label for="option${optionCount}">Option ${optionCount}:</label>
-        <input type="text" id="option${optionCount}" required>
-    `;
-    optionContainer.appendChild(newOptionInput);
+    if (optionCount < 5) { // Limit to 5 options
+        optionCount++;
+        const optionContainer = document.getElementById("options-container");
+        const newOptionInput = createOptionField(optionCount);
+        optionContainer.insertAdjacentHTML('beforeend', newOptionInput);
+    } else {
+        alert("You can only add up to 5 options.");
+    }
 }
 
 // Reset and close the poll creation form
 function closePollForm() {
     document.getElementById("pollName").value = '';
-    document.getElementById("options-container").innerHTML = `
-        <label for="option1">Option 1:</label>
-        <input type="text" id="option1" required>
-        <label for="option2">Option 2:</label>
-        <input type="text" id="option2" required>
-    `;
-    optionCount = 2; // Reset option count to initial value
-    document.getElementById("poll-form-modal").style.display = "none"; // Close modal
+    document.getElementById("options-container").innerHTML = createOptionField(1) + createOptionField(2);
+    optionCount = 2;
+    $('#createPollModal').modal('hide'); // Use Bootstrap's modal method to hide the modal
 }
 
 // Logout function
 function logout() {
     localStorage.removeItem("role");
+    // Clear all voted polls
+    pollResults.forEach((_, index) => localStorage.removeItem(`voted-${index}`));
     window.location.href = "index.html";
 }
 
-// Function to add glassmorphism effect on login page
-function addGlassMorphismEffect() {
-    
+// Hamburger menu toggle function
+function toggleHamburgerMenu() {
+    const menu = document.getElementById("adminMenu");
+    menu.classList.toggle("show"); // Add or remove the show class
 }
 
-// Call this function in window.onload
+// Call on page load
 window.onload = function() {
-    updatePollList(); // Show polls in admin dashboard
-    addGlassMorphismEffect(); // This may not be needed anymore
-    document.getElementById('createPollForm').addEventListener('submit', handleCreatePoll); // Ensure it's set up on load
+    updatePollList();
+    addGlassMorphismEffect(); // Optional function for visual effects
+    document.getElementById('createPollForm').addEventListener('submit', handleCreatePoll);
+    document.getElementById('hamburgerToggle').addEventListener('click', toggleHamburgerMenu); // Add click event listener
 };
-
