@@ -240,7 +240,8 @@ function toggleHamburgerMenu() {
 // Call on page load
 window.onload = function() {
     updatePollList();
-    addGlassMorphismEffect(); // Optional function for visual effects
     document.getElementById('createPollForm').addEventListener('submit', handleCreatePoll);
     document.getElementById('hamburgerToggle').addEventListener('click', toggleHamburgerMenu); // Add click event listener
 };
+
+/*      GOOD         */

@@ -258,7 +258,6 @@ footer {
 }
 
 /* Admin Styles */
-/* Admin Styles */
 body.admin-body {
     background: linear-gradient(to right, #e0eafc, #cfdef3); /* Keep your background */
     font-family: 'Poppins', sans-serif; /* Retain font-family */
@@ -267,25 +266,21 @@ body.admin-body {
     padding: 0;
 }
 
-/* Glassmorphism Effect */
-.glass {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
 /* Poll Card Styles */
 .poll-card {
-    position: relative; /* Required for the pseudo-elements */
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transitions */
-    overflow: hidden; /* Ensures shadows don't overflow */
-    margin: 20px; /* Added margin for spacing between cards */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
+
+.poll-card:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+}
+
 
 .poll-card:before, .poll-card:after {
     z-index: -1;
@@ -295,21 +290,9 @@ body.admin-body {
     left: -10px; /* Positioned to the left of the card */
     width: calc(100% + 20px); /* Width larger than the card */
     height: calc(100% + 20px); /* Height larger than the card */
-    background: rgba(119, 119, 119, 0.3); /* Slightly transparent for better visual */
-    box-shadow: 0 15px 20px rgba(119, 119, 119, 0.5); /* Soft shadow */
+    box-shadow: 0 15px 20px rgba(2, 196, 245, 0.5); /* Soft shadow */
     border-radius: 20px; /* Match with card border-radius */
     transition: transform 0.3s ease; /* Smooth transition for hover effects */
-}
-
-.poll-card:after {
-    left: auto;
-    right: -10px; /* Positioned to the right of the card */
-    transform: rotate(3deg); /* Light rotation for the effect */
-}
-
-/* Increase shadow on hover */
-.poll-card:hover:before, .poll-card:hover:after {
-    box-shadow: 0 20px 30px rgba(119, 119, 119, 0.6); /* Enhanced shadow on hover */
 }
 
 /* Header and Navigation */
@@ -380,15 +363,7 @@ body.admin-body {
     margin-bottom: 20px; /* Space between containers */
 }
 
-.poll-container {
-    box-shadow: 10px 5px 5px red;
-    transition: box-shadow 0.3s ease; /* Smooth transition effect */
-}
 
-/* Stronger glow on hover */
-.poll-container:hover {
-    box-shadow: 0 0 20px rgba(0, 204, 255, 1); /* More pronounced glow */
-}
 
 /* Responsive Styles */
 @media (max-width: 768px) {
@@ -469,3 +444,30 @@ body.admin-body {
     padding: 12px 25px; /* More padding for better touch target */
     font-size: 16px; /* Increase font size */
 }
+
+/* Option Fields Styling */
+.form-control {
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Hide extra options initially */
+#option3, #option4, #option5 {
+    display: none;
+}
+
+/* Display additional options when the button is clicked */
+.show-options #option3, 
+.show-options #option4, 
+.show-options #option5 {
+    display: block;
+}
+
+/*       Good           */
