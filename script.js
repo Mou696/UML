@@ -157,6 +157,7 @@ function updatePollList() {
     });
 }
 
+
 // Function to add a poll
 function addPoll(pollName, options) {
     const pollList = document.getElementById("poll-list");
@@ -179,7 +180,7 @@ function addPoll(pollName, options) {
     pollList.appendChild(pollContainer);
 }
 
-// Voting section control
+// voting section control
 function addPollOption() {
     const optionsContainer = document.getElementById('options-container');
     const newOptionCount = optionsContainer.getElementsByClassName('form-group').length + 1;
@@ -193,6 +194,8 @@ function addPollOption() {
         optionsContainer.appendChild(newOption);
     }
 }
+
+
 
 // Handle Poll Creation in Admin Dashboard
 function handleCreatePoll(event) {
@@ -236,17 +239,38 @@ function addPollOption() {
         const optionContainer = document.getElementById("options-container");
         const newOptionInput = createOptionField(optionCount);
         optionContainer.insertAdjacentHTML('beforeend', newOptionInput);
+    } else {
+        alert("You can only add up to 5 options.");
     }
 }
 
-// Initialize and render poll results on load
-document.addEventListener("DOMContentLoaded", () => {
-    updatePollList();
-    updatePollResultsDisplay();
-});
-
-// Attach event listeners for login form
-const loginForm = document.getElementById("login-form");
-if (loginForm) {
-    loginForm.addEventListener("submit", handleLogin);
+// Reset and close the poll creation form
+function closePollForm() {
+    document.getElementById("pollName").value = '';
+    document.getElementById("options-container").innerHTML = createOptionField(1) + createOptionField(2);
+    optionCount = 2;
+    $('#createPollModal').modal('hide'); // Use Bootstrap's modal method to hide the modal
 }
+
+// Logout function
+function logout() {
+    localStorage.removeItem("role");
+    // Clear all voted polls
+    pollResults.forEach((_, index) => localStorage.removeItem(`voted-${index}`));
+    window.location.href = "index.html";
+}
+
+// Hamburger menu toggle function
+function toggleHamburgerMenu() {
+    const menu = document.getElementById("adminMenu");
+    menu.classList.toggle("show"); // Add or remove the show class
+}
+
+// Call on page load
+window.onload = function() {
+    updatePollList();
+    document.getElementById('createPollForm').addEventListener('submit', handleCreatePoll);
+    document.getElementById('hamburgerToggle').addEventListener('click', toggleHamburgerMenu); // Add click event listener
+};
+
+/*      GOOD         */
