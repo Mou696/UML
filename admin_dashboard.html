@@ -29,15 +29,73 @@
     <!-- Main Content -->
     <div class="container mt-4">
         <div class="row" id="poll-list">
-            <div class="col-lg-4 mb-3">
-                <div class="card effect2"> <!-- Added col-lg-4 for proper grid layout -->
+            
+            <!-- Poll 1: Video Games -->
+            <div class="col-lg-6 mb-3">
+                <div class="card effect2">
                     <div class="card-body">
-                        <h5 class="card-title">Poll Name</h5>
-                        <p class="card-text">Poll description goes here.</p>
+                        <h5 class="card-title">Best Video Game of 2023</h5>
+                        <form id="videoGamePollForm">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="videoGameOptions" id="gameOption1" value="The Legend of Zelda">
+                                <label class="form-check-label" for="gameOption1">
+                                    The Legend of Zelda
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="videoGameOptions" id="gameOption2" value="Elden Ring">
+                                <label class="form-check-label" for="gameOption2">
+                                    Elden Ring
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="videoGameOptions" id="gameOption3" value="Cyberpunk 2077: Phantom Liberty">
+                                <label class="form-check-label" for="gameOption3">
+                                    Cyberpunk 2077: Phantom Liberty
+                                </label>
+                            </div>
+                            <button type="button" class="btn btn-primary mt-3" onclick="submitVote('videoGamePollForm')">Vote</button>
+                        </form>
                     </div>
                 </div>
             </div>
-            <!-- Polls will be dynamically added here -->
+            
+            <!-- Poll 2: Sports -->
+            <div class="col-lg-6 mb-3">
+                <div class="card effect2">
+                    <div class="card-body">
+                        <h5 class="card-title">Favorite Sport</h5>
+                        <form id="sportsPollForm">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sportsOptions" id="sportOption1" value="Football">
+                                <label class="form-check-label" for="sportOption1">
+                                    Football
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sportsOptions" id="sportOption2" value="Basketball">
+                                <label class="form-check-label" for="sportOption2">
+                                    Basketball
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sportsOptions" id="sportOption3" value="Tennis">
+                                <label class="form-check-label" for="sportOption3">
+                                    Tennis
+                                </label>
+                            </div>
+                            <button type="button" class="btn btn-primary mt-3" onclick="submitVote('sportsPollForm')">Vote</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        <!-- Results Display -->
+        <div id="results-display" class="mt-4">
+            <h4>Poll Results:</h4>
+            <div id="results-content"></div>
         </div>
     </div>
 
@@ -79,7 +137,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="script.js"></script>
+
 </body>
 </html>
-
-<!---GOOD--->

@@ -126,6 +126,37 @@ function updatePollResultsDisplay() {
 
 // Admin Dashboard Functions
 
+// Update Poll List on Admin Dashboard
+function updatePollList() {
+    const pollList = document.getElementById("poll-list");
+    pollList.innerHTML = ''; // Clear existing polls
+
+    pollResults.forEach((poll, pollIndex) => {
+        const pollCard = `
+            <div class="col-lg-4 mb-3">
+                <div class="card poll-card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">${poll.pollName}</h5>
+                        <form id="pollForm-${pollIndex}">
+                            ${poll.options.map((option, index) => `
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="vote-option-${pollIndex}" id="option-${pollIndex}-${index}" value="${option.option}">
+                                    <label class="form-check-label" for="option-${pollIndex}-${index}">
+                                        ${option.option}
+                                    </label>
+                                </div>
+                            `).join('')}
+                            <button type="button" class="btn btn-primary mt-3" onclick="handleVote(event, ${pollIndex})">Vote</button>
+                        </form>
+                        <div id="poll-results-${pollIndex}"></div>
+                    </div>
+                </div>
+            </div>
+        `;
+        pollList.insertAdjacentHTML('beforeend', pollCard);
+    });
+}
+
 // Function to add a poll
 function addPoll(pollName, options) {
     const pollList = document.getElementById("poll-list");
@@ -148,24 +179,19 @@ function addPoll(pollName, options) {
     pollList.appendChild(pollContainer);
 }
 
-// Update Poll List on Admin Dashboard
-function updatePollList() {
-    const pollList = document.getElementById("poll-list");
-    pollList.innerHTML = '';
-
-    pollResults.forEach((poll, pollIndex) => {
-        const pollCard = `
-            <div class="col-lg-4 mb-3">
-                <div class="card poll-card h-100 shadow-sm poll-container">
-                    <div class="card-body">
-                        <h5 class="card-title">${poll.pollName}</h5>
-                        <button class="btn btn-danger mt-3" onclick="deletePoll(${pollIndex})">Delete Poll</button>
-                    </div>
-                </div>
-            </div>
+// Voting section control
+function addPollOption() {
+    const optionsContainer = document.getElementById('options-container');
+    const newOptionCount = optionsContainer.getElementsByClassName('form-group').length + 1;
+    if (newOptionCount <= 5) { // Limit options to 5
+        const newOption = document.createElement('div');
+        newOption.classList.add('form-group');
+        newOption.innerHTML = `
+            <label for="option${newOptionCount}">Option ${newOptionCount}</label>
+            <input type="text" class="form-control" id="option${newOptionCount}" required>
         `;
-        pollList.insertAdjacentHTML('beforeend', pollCard);
-    });
+        optionsContainer.appendChild(newOption);
+    }
 }
 
 // Handle Poll Creation in Admin Dashboard
@@ -185,7 +211,7 @@ function handleCreatePoll(event) {
     if (pollName && options.length >= 2 && options.length <= 5) {
         pollResults.push({ pollName, options });
         addPoll(pollName, options); // Add the poll to the poll list
-        alert(`Poll "${pollName}" created successfully.`);
+        
         updatePollList();
         closePollForm();
     } else {
@@ -210,38 +236,17 @@ function addPollOption() {
         const optionContainer = document.getElementById("options-container");
         const newOptionInput = createOptionField(optionCount);
         optionContainer.insertAdjacentHTML('beforeend', newOptionInput);
-    } else {
-        alert("You can only add up to 5 options.");
     }
 }
 
-// Reset and close the poll creation form
-function closePollForm() {
-    document.getElementById("pollName").value = '';
-    document.getElementById("options-container").innerHTML = createOptionField(1) + createOptionField(2);
-    optionCount = 2;
-    $('#createPollModal').modal('hide'); // Use Bootstrap's modal method to hide the modal
-}
-
-// Logout function
-function logout() {
-    localStorage.removeItem("role");
-    // Clear all voted polls
-    pollResults.forEach((_, index) => localStorage.removeItem(`voted-${index}`));
-    window.location.href = "index.html";
-}
-
-// Hamburger menu toggle function
-function toggleHamburgerMenu() {
-    const menu = document.getElementById("adminMenu");
-    menu.classList.toggle("show"); // Add or remove the show class
-}
-
-// Call on page load
-window.onload = function() {
+// Initialize and render poll results on load
+document.addEventListener("DOMContentLoaded", () => {
     updatePollList();
-    document.getElementById('createPollForm').addEventListener('submit', handleCreatePoll);
-    document.getElementById('hamburgerToggle').addEventListener('click', toggleHamburgerMenu); // Add click event listener
-};
+    updatePollResultsDisplay();
+});
 
-/*      GOOD         */
+// Attach event listeners for login form
+const loginForm = document.getElementById("login-form");
+if (loginForm) {
+    loginForm.addEventListener("submit", handleLogin);
+}
