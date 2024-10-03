@@ -4,6 +4,7 @@
     --space-large: 30px;
 }
 
+
 /* General Styles */
 body.general-body {
     background-color: #f8f9fa;
@@ -292,6 +293,8 @@ body.admin-body {
     transform: scale(1.05);
 }
 
+
+
 .poll-card:before, .poll-card:after {
     z-index: -1;
     position: absolute;
@@ -345,6 +348,8 @@ body.admin-body {
 button:hover {
     transition: background-color 0.2s ease, color 0.2s ease;
 }
+
+
 
 .btn-primary {
     background-color: #007bff;

@@ -126,11 +126,12 @@ function updatePollResultsDisplay() {
 
 // Admin Dashboard Functions
 
+/*
 // Update Poll List on Admin Dashboard
 function updatePollList() {
     const pollList = document.getElementById("poll-list");
     pollList.innerHTML = ''; // Clear existing polls
-
+    
     pollResults.forEach((poll, pollIndex) => {
         const pollCard = `
             <div class="col-lg-4 mb-3">
@@ -156,7 +157,7 @@ function updatePollList() {
         pollList.insertAdjacentHTML('beforeend', pollCard);
     });
 }
-
+*/
 
 // Function to add a poll
 function addPoll(pollName, options) {
